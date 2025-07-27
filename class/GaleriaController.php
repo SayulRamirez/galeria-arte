@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && $_GET) {
 
     $galeriaServicio = new GaleriaServicio();
     $resultado = $galeriaServicio->getTodasLasObras();
-    
+
     header('Content-Type: application/json');
     return json_encode($resultado);
 }
@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
             $tipoArchivo = $imagen['type'];
             $rutaTemporal = $imagen['tmp_name'];
 
-            $directorioDestino = PATH . 'uploads/';
+            $relativa = "../uploads/";
 
-            $rutaDestino = $directorioDestino . basename($nombreArchivo);
+            $rutaDestino = $relativa . basename($nombreArchivo);
 
             if (!move_uploaded_file($rutaTemporal, $rutaDestino)) {
                 echo 'Ocurrió un error al subir el archivo';
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
 
             $obra = ['autor' => $_POST['autor'],
                     'titulo' => $_POST['titulo'],
-                    'path' => $directorioDestino,
+                    'path' => 'uploads/'.basename($nombreArchivo),
                     'descripcion' => $_POST['descripcion']
             ];
 
