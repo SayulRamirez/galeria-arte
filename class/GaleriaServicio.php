@@ -1,16 +1,20 @@
 <?php 
 include_once('Conexion.php');
 
-class GaleriaServicio extends Conexion {
+class GaleriaServicio {
 
-    function __construct() {}
+    private $con;
+
+    function __construct() {
+        $this->con = new Conexion();
+    }
 
     function nuevaObra($obra) {
         try {
             $query = "INSERT INTO obras(autor, titulo, imagen_path, descripcion) VALUES (?, ?, ?, ?)";
     
             $params = [$obra['autor'], $obra['titulo'], $obra['path'], $obra['descripcion']];
-            return $this->transaction($query, $params);            
+            return $this->con->transaction($query, $params);            
         } catch (Exception $e) {
             return false;
         }
@@ -20,7 +24,7 @@ class GaleriaServicio extends Conexion {
         $query = "SELECT * FROM obras";
 
         try {
-            return $this->select($query, []);
+            return $this->con->select($query, []);
         } catch (Exception $e) {
             return [];
         }
@@ -35,7 +39,7 @@ class GaleriaServicio extends Conexion {
         ];
         
         try {
-            return $this->beginTransaction($query, $params);
+            return $this->con->beginTransaction($query, $params);
         } catch (Exception $e) {
             return false;
         }
@@ -49,7 +53,7 @@ class GaleriaServicio extends Conexion {
         $query = "SELECT id, password, nombres FROM usuarios WHERE email = ?";
 
         try {
-            $resultado = $this->select($query, [$correo]);
+            $resultado = $this->con->select($query, [$correo]);
 
             if(count($resultado) == 0 || !password_verify($contrasena, $respuesta[0]['password'])) {
                 $respuesta['contenido'] = "Credenciales incorrectas";
