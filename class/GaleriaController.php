@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
             $respuesta = ['status' => $resultado, 
                         'mensaje' => $resultado ? 'Se agrego una nueva obra.' : 'Ocurrió un error al agregar la obra.'
             ];
-            
+
             echo json_encode($respuesta);
             break;
         case 'registrar':
@@ -55,15 +55,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
             break;
         case 'login':
             $respuesta = $galeriaServicio->login($_POST['email'], $_POST['password']);
-
+            
+            header('Content-Type: application/json');
             if($respuesta['exitosa']) {
                 session_start();
                 $_SESSION['nombre'] = $respuesta['contenido']['nombre'];
-                header('Location: ../admin.php');
+                
+                echo json_encode(['status' => true]);
                 exit();
             }
-
-            echo $respuesta['contenido'];
+            
+            echo json_encode(['status' => false, 
+                            'mensaje' => $respuesta['contenido']]);
             break;
     }
 }

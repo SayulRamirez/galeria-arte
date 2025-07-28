@@ -39,7 +39,7 @@ class GaleriaServicio {
         ];
         
         try {
-            return $this->con->beginTransaction($query, $params);
+            return $this->con->transaction($query, $params);
         } catch (Exception $e) {
             return false;
         }
@@ -54,8 +54,8 @@ class GaleriaServicio {
 
         try {
             $resultado = $this->con->select($query, [$correo]);
-
-            if(count($resultado) == 0 || !password_verify($contrasena, $respuesta[0]['password'])) {
+            
+            if(count($resultado) == 0 || !password_verify($contrasena, $resultado[0]['password'])) {
                 $respuesta['contenido'] = "Credenciales incorrectas";
                 return $respuesta;
             }
