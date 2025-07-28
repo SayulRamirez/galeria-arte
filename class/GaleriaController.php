@@ -43,7 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
 
             $resultado = $galeriaServicio->nuevaObra($obra);
 
-            echo $resultado ? 'Se agrego una nueva obra.' : 'Ocurrió un error al agregar la obra.';
+            $respuesta = ['status' => $resultado, 
+                        'mensaje' => $resultado ? 'Se agrego una nueva obra.' : 'Ocurrió un error al agregar la obra.'
+            ];
+            
+            echo json_encode($respuesta);
             break;
         case 'registrar':
             $resultado = $galeriaServicio->registrar($_POST['usuario']);
