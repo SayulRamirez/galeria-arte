@@ -1,13 +1,14 @@
 <?php
 include_once('GaleriaServicio.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && $_GET) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $galeriaServicio = new GaleriaServicio();
     $resultado = $galeriaServicio->getTodasLasObras();
 
     header('Content-Type: application/json');
-    return json_encode($resultado);
+    echo json_encode($resultado);
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST) {
